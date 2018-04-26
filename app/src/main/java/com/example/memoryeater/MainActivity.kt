@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun releaseMemory() {
         eater?.cancel(true)
+        Thread.sleep(1000)
         mData.clear()
         updateDisplay()
     }
@@ -47,15 +48,15 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("StaticFieldLeak")
     inner class EaterClass : AsyncTask<Void, String, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
-            for (i in 0..19) {
-                for (j in 0..9999) {
+            for (i in 1..1000) {
+                for (j in 1..10000) {
                     mData.add("Item $i:$j")
                 }
                 runOnUiThread({
                     updateDisplay()
                 })
                 try {
-                    Thread.sleep(1000)
+                    Thread.sleep(500)
                     if (isCancelled) break
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
@@ -65,10 +66,9 @@ class MainActivity : AppCompatActivity() {
             return null
         }
 
-        @SuppressLint("SetTextI18n")
         override fun onProgressUpdate(vararg values: String?) {
             super.onProgressUpdate(*values)
-            tvOut.text = "Number of items: ${mData.size}"
+            updateDisplay()
         }
 
     }
