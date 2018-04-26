@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
         updateDisplay()
     }
 
+    override fun onDestroy() {
+        eater?.cancel(true)
+        super.onDestroy()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun eatMemory() {
         eater?.cancel(true)
