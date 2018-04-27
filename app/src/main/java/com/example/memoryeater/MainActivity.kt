@@ -11,9 +11,8 @@ import java.util.concurrent.Executors
 class MainActivity : AppCompatActivity() {
 
     private val mData = mutableListOf<String>()
-    private val executor = Executors.newSingleThreadExecutor()
     private lateinit var tvOut: TextView
-    var eater : EaterClass? = null
+    private var eater: EaterClass? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,28 +45,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class EaterClass : AsyncTask<Void, String, Void>() {
+    inner class EaterClass : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             for (i in 1..1000) {
+
+                // Add 10,000 items to the collection
                 for (j in 1..10000) {
                     mData.add("Item $i:$j")
                 }
-                runOnUiThread({
-                    updateDisplay()
-                })
-                try {
-                    Thread.sleep(500)
-                    if (isCancelled) break
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
+
+                // Send a message to the UI thread
+                publishProgress()
+
+                // Wait half a second, then do it again if not cancelled
+                Thread.sleep(500)
+                if (isCancelled) break
 
             }
             return null
         }
 
-        override fun onProgressUpdate(vararg values: String?) {
-            super.onProgressUpdate(*values)
+        override fun onProgressUpdate(vararg values: Void?) {
             updateDisplay()
         }
 
@@ -75,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun updateDisplay() {
-        tvOut.text = "Number of items: ${mData.size}"
+        val label = getString(R.string.number_of_items)
+        tvOut.text = "$label: ${mData.size}"
     }
 }
