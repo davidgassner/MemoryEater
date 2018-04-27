@@ -4,5 +4,5 @@
     <string name="release_memory">Release memory</string>
     <string name="memory_eater">Memory Eater</string>
     <string name="ready">Ready!</string>
-    <string name="number_of_items">Number of items</string>
+    <string name="report_label">Number of items</string>
 </resources>

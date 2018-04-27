@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
     private val mData = mutableListOf<String>()
-    private lateinit var tvOut: TextView
     private var eater: EaterClass? = null
+    private lateinit var tvOut: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun eatMemory() {
         eater?.cancel(true)
         eater = EaterClass()
@@ -42,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         Thread.sleep(1000)
         mData.clear()
         updateDisplay()
+    }
+
+    private fun updateDisplay() {
+        val report = "${getString(R.string.report_label)}: ${mData.size}"
+        tvOut.text = report
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -71,9 +74,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun updateDisplay() {
-        val label = getString(R.string.number_of_items)
-        tvOut.text = "$label: ${mData.size}"
-    }
 }
